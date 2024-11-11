@@ -1,7 +1,5 @@
-# Ripped off from https://medium.com/@johnidouglasmarangon/how-to-summarize-text-with-openai-and-langchain-e038fc922af
-
+# References: https://github.com/meta-llama/llama-recipes
 import os
-#from langchain_community.document_loaders import TextLoader
 from langchain_community.chat_models import ChatOpenAI
 from langchain.docstore.document import Document
 from langchain.text_splitter import CharacterTextSplitter
@@ -16,21 +14,20 @@ from time import monotonic
 
 #load the file
 with open( os.getcwd() + "/../data/ent_arch.chap5.txt") as f:
-    chap5 = f.read()
+    source_text = f.read()
 
-model_name = "gpt-3.5-turbo"
-#model_name = "gpt-4o"
+model_name = "llama3.2"
 text_splitter = CharacterTextSplitter.from_tiktoken_encoder (model_name=model_name)
-texts = text_splitter.split_text(chap5)
+texts = text_splitter.split_text(source_text)
 docs = [Document(page_content=t) for t in texts]
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 llm = ChatOpenAI(temperature=0, openai_api_key=OPENAI_API_KEY, model_name=model_name)
 
 
-promt_template = """write a summary using bullet points of the following:
+prompt_template = """write a summary using bullet points of the following:
 {text}"""
-prompt = PromptTemplate(template=promt_template, input_variables=["text"])
+prompt = PromptTemplate(template=prompt_template, input_variables=["text"])
 
 
 def num_tokens_from_string(string: str, encoding_name: str) -> int:
@@ -38,11 +35,9 @@ def num_tokens_from_string(string: str, encoding_name: str) -> int:
     num_tokens = len(encoding.encode(string))
     return num_tokens
 
-num_tokens = num_tokens_from_string(chap5, model_name)
+
+num_tokens = num_tokens_from_string(source_text, model_name)
 print("Number of tokens " + str(num_tokens))
-
-
-
 gpt35_turbo_max_tokens = 4097
 verbose = True
 if num_tokens < gpt35_turbo_max_tokens:
