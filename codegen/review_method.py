@@ -11,7 +11,7 @@ model = Ollama(model=model_id)
 def review_code(input_text: str):
     # Step 1: Prepare the  prompt
     prompt_template = """
-    You are an advanced code generation model. Review below code and identify bad practices:
+    You are an advanced code generation model. Review below code and Generate more efficient method with documentation:
 
     {text}
 
@@ -29,9 +29,10 @@ def review_code(input_text: str):
 
 #Step 3 Set up Streamlit
 st.title("Code review with Code Llama:13b")
-input_query = st.text_input("What do you want to review?", "")
+input_query = st.text_area("What do you want to review?", "")
 if st.button("Review code"):
     with st.spinner("Reviewing code..."):
         mycode = review_code(input_query)
     st.subheader("Response")
+    print(mycode)
     st.markdown(mycode)

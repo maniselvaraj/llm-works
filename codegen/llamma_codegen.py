@@ -11,7 +11,7 @@ model = Ollama(model=model_id)
 def generate_code(input_text: str):
     # Step 1: Prepare the  prompt
     prompt_template = """
-    You are an advanced code generation model. Generate Java code for following need:
+    You are an advanced code generation model. Generate code in Java language for following need:
 
     {text}
 
