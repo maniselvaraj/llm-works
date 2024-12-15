@@ -16,11 +16,11 @@ def fetch_java_files(file_type="src/main"):
         access_token=os.getenv("GITHUB_PERSONAL_ACCESS_TOKEN"),
         github_api_url="https://api.github.com",
         file_filter=lambda file_path: file_path.endswith(
-            ".java"
+            ".adoc"
         ),  # load all markdowns files.
     )
     documents = loader.load()
-    #print(documents)
+    print(documents)
     # Create the data structure while ignoring src/test paths
     java_files_data = [
         {
@@ -34,5 +34,5 @@ def fetch_java_files(file_type="src/main"):
     return java_files_data
 
 
-fetch_java_files('src/main')
+fetch_java_files('/src/main')
 

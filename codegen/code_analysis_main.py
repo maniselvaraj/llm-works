@@ -6,20 +6,20 @@ from langchain_core.prompts import ChatPromptTemplate
 from github_loader import fetch_java_files
 
 
-os.environ["LANGCHAIN_TRACING_V2"] = "true"
+os.environ["LANGCHAIN_TRACING_V2"] = "false"
 open_ai_key = os.getenv("OPENAI_API_KEY")
 warnings.filterwarnings("ignore")
 
 
 def simple_openai_call():
-    llm = ChatOpenAI(api_key=os.environ["OPENAI_API_KEY"])
+    llm = ChatOpenAI(openai_api_key=os.environ["OPENAI_API_KEY"])
     #answer = llm.invoke("generate java method to check if string has unique characters. return the code alone")
     answer = llm.invoke("write a welcome email for a new hire")
     print(answer)
 
 
 def advanced_openai_call(source_code):
-    llm = ChatOpenAI(api_key=os.environ["OPENAI_API_KEY"])
+    llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"))
     prompt = ChatPromptTemplate.from_messages([
         ("system", "you are a helpful ai based code generator"),
         ("user", "review the below java class and produce improved and efficient version of the same."),
