@@ -51,7 +51,6 @@ for tool in tools:
     print(tool.name)
 
 
-
 llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), temperature=0)
 prompt = ChatPromptTemplate.from_messages(
     [
@@ -64,6 +63,7 @@ prompt = ChatPromptTemplate.from_messages(
         ("placeholder", "{agent_scratchpad}"),
     ]
 )
+
 # prompt = ChatPromptTemplate.from_messages([
 #     {"role": "system", "content": "You are a helpful assistant specialized in managing GitHub repositories and answering developer queries."},
 #     {"role": "user", "content": "{input}"}
@@ -100,64 +100,37 @@ agent_exec = AgentExecutor.from_agent_and_tools(agent=agent,
 
 # Example usage
 #input_text = "What is the name of the current branch in the repository?"
-input_data = {"input": "What is the name of the current branch in the repository?"}  # Example input
+#input_data = {"input": "What is the name of the current branch in the repository?"}  # Example input
+#input_data = {"input": "Create branch called code_review based out of main branch"}  # Example input
 
-output = agent_exec.invoke(input_data)
-print(f"Output: {output}")
+# output = agent_exec.invoke(input_data)
+# print(f"Output: {output}")
 
-'''
-from langchain_openai import OpenAI
-from langchain.agents import initialize_agent
-
-# Initialize the language model
-llm = OpenAI(model="text-davinci-003", temperature=0, max_tokens=500)
-
-
-# Create a GitHub toolkit instance
-github_toolkit = GitHubToolkit(
-    repo_name="maniselvaraj/springboot-demo",  # Replace with your GitHub repo
-    access_token=os.getenv("GITHUB_PERSONAL_ACCESS_TOKEN")          # Replace with your GitHub token
-)
-
-tools=github_toolkit.get_tools()
-print (os.getenv("GITHUB_PERSONAL_ACCESS_TOKEN"))
-for tool in tools:
-    print(tool.name)
-
-print ("*" * 80)
-
-# Initialize the agent
-agent = initialize_agent(
-    tools=github_toolkit.get_tools(),
-    llm=llm,
-    agent="zero-shot-react-description",
-    verbose=True,
-)
-
-# Parameters
-branch_name = "new-feature-branch"
+branch_name = "new-feature-branch4"
 file_path = "README.adoc"  # File to be updated
 file_content_update = "This is the updated content for the file. changing it using langchain\n"
-commit_message = "Updated file.txt with new content"
-pull_request_title = "Update file.txt"
-pull_request_body = "This pull request updates file.txt with new content."
+commit_message = "Updated " + file_path + " with new content"
+pull_request_title = "Update " + file_path
+pull_request_body = "This pull request updates " + file_path + " with new content."
 
 # Step 1: Create a new branch
-create_branch_response = agent.run(f"Create a new branch named {branch_name}")
+input_data = {"input": "Create a new branch named " + branch_name}  # Example input
+create_branch_response = agent_exec.invoke(input_data)
 print(create_branch_response)
 
 # Step 2: Update the file
-update_file_response = agent.run(f"Update the file {file_path} with the following content: \n{file_content_update}")
+input_data = {"input": "Update the file " + file_path + " with the following content : \n" + file_content_update}
+update_file_response = agent_exec.invoke(input_data)
 print(update_file_response)
 
 # Step 3: Commit the changes
-commit_response = agent.run(f"Commit the changes with the message: \"{commit_message}\"")
+input_data = {"input": "Commit the changes with message committed"}  # Example input
+commit_response = agent_exec.invoke(input_data)
 print(commit_response)
 
 # Step 4: Create a pull request
-create_pr_response = agent.run(f"Create a pull request with the title \"{pull_request_title}\" and the body \"{pull_request_body}\".")
+input_data = {"input": "Create a pull request with the title " + pull_request_title + " and from source branch " + branch_name + " to target branch main with the body " + pull_request_body }
+create_pr_response = agent_exec.invoke(input_data)
 print(create_pr_response)
 
-# Note: Replace placeholder values for repository name, file path, and GitHub token with your actual values.
-# Make sure your GitHub token has the necessary permissions for the operations.
-'''
+
