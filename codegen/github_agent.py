@@ -87,7 +87,7 @@ def update_file(agent_exec, file_path, file_content_update):
     # print("="*80)
     # print(file_content_update)
     # print("=" * 80)
-    input_data = {"input": "Update the file " + file_path + " with the following content : \n" + file_content_update}
+    input_data = {"input": "Update file " + file_path + " with the following content : \n" + file_content_update}
     update_file_response = agent_exec.invoke(input_data)
     print(update_file_response)
 
@@ -134,8 +134,8 @@ def pull_request_workflow():
     file_path = "README.adoc"  # File to be updated
     file_content_update = f"This is the updated content for the file. changing it using langchain {time}"
     commit_message = "Updated " + file_path + " with new content"
-    pull_request_title = "Update " + file_path
-    pull_request_body = "This pull request updates " + file_path + " with new content."
+    pull_request_title = "Update " + file_path + " and README.md"
+    pull_request_body = "This pull request updates " + file_path + " and README.md with new content."
 
     # Step 1: Create a new branch
     initialize_branch(agent_exec, branch_name)
@@ -148,6 +148,8 @@ def pull_request_workflow():
     # print(file_content_update)
     # print("=" * 80)
     update_file(agent_exec, file_path, file_content_update)
+    file_path = "README.md"
+    update_file(agent_exec,  file_path, file_content_update)
     # input_data = {"input": "Update the file " + file_path + " with the following content : \n" + file_content_update}
     # update_file_response = agent_exec.invoke(input_data)
     # print(update_file_response)
