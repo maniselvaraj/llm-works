@@ -4,18 +4,11 @@ from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 
 from github_loader import fetch_java_files
-
+from utils import save_contents
 
 os.environ["LANGCHAIN_TRACING_V2"] = "false"
 open_ai_key = os.getenv("OPENAI_API_KEY")
 warnings.filterwarnings("ignore")
-
-
-def simple_openai_call():
-    llm = ChatOpenAI(openai_api_key=os.environ["OPENAI_API_KEY"])
-    #answer = llm.invoke("generate java method to check if string has unique characters. return the code alone")
-    answer = llm.invoke("write a welcome email for a new hire")
-    print(answer)
 
 
 def advanced_openai_call(source_code):
@@ -23,6 +16,7 @@ def advanced_openai_call(source_code):
     prompt = ChatPromptTemplate.from_messages([
         ("system", "you are a helpful ai based code generator"),
         ("user", "review the below java class and produce improved and efficient version of the same."),
+        ("user", "generate method comments for improved code"),
         ("user", "return java code only"),
         ("user", "{input_java_class}"),
     ])
@@ -41,7 +35,8 @@ def main():
         source_code = java_file['page_content'].split('\n')[1:-1]
         improved_code = advanced_openai_call(source_code)
         print('=' * 80)
-        print(improved_code)
+        print(improved_code.content)
+        save_contents(improved_code.content, java_file['file_source'] )
         print('*' * 80)
 
 main()

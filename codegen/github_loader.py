@@ -16,7 +16,7 @@ def fetch_java_files(file_type="src/main"):
         access_token=os.getenv("GITHUB_PERSONAL_ACCESS_TOKEN"),
         github_api_url="https://api.github.com",
         file_filter=lambda file_path: file_path.endswith(
-            ".adoc"
+            ".java"
         ),  # load all markdowns files.
     )
     documents = loader.load()
