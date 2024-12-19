@@ -25,6 +25,7 @@ def fetch_java_files(file_type="src/main"):
     java_files_data = [
         {
             'file_source': doc.metadata['source'],  # Java file path
+            'file_path': doc.metadata['path'],
             'page_content': doc.page_content  # Corresponding file content
         }
         for doc in documents

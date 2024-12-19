@@ -97,7 +97,7 @@ def pull_request_workflow():
     time = utc_time()
     branch_name = f"feature-branch-{time}"
     main_branch = "main"
-    file_path = "README.adoc"  # File to be updated
+    file_path = "src/main/java/com/mani/llm/springboot/LLMMainController.java"  # File to be updated
     file_content_update = f"This is the updated content for the file. changing it using langchain {time}"
     commit_message = "Updated " + file_path + " with new content"
     pull_request_title = "Update " + file_path + " and README.md"
@@ -110,8 +110,21 @@ def pull_request_workflow():
     update_file(agent_exec,  file_path, file_content_update)
     create_pr(agent_exec, pull_request_title, branch_name, main_branch, pull_request_body)
 
-
 init_github()
-#pull_request_workflow()
+pull_request_workflow()
+
+def raise_pr(java_content_map):
+    init_github()
+    agent_exec = initialize_agent()
+    time = utc_time()
+    branch_name = f"feature-branch-{time}"
+    main_branch = "main"
+    pull_request_title = "Update Java files"
+    pull_request_body = "This pull request updates Java files with new content."
+    initialize_branch(agent_exec, branch_name)
+    for file_path, file_content_update in java_content_map.items():
+        print(">>>>Updating file : ", file_path)
+        update_file(agent_exec, file_path, file_content_update)
+    create_pr(agent_exec, pull_request_title, branch_name, main_branch, pull_request_body)
 
 
