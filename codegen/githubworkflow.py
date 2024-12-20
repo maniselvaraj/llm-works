@@ -131,7 +131,7 @@ def raise_pr(java_content_map):
         # Step 4: Create a pull request
         pr = create_pull_request(NEW_BRANCH)
         print(f"Pull request created: {pr['html_url']}")
-
+        return pr['html_url']
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
 
