@@ -10,6 +10,7 @@ def launch_ui():
     Launches the Streamlit UI for accepting a GitHub repository URL.
     """
     st.title("Brownfield Java Code Analyzer")
+    st.subheader("Mani Selvaraj, GenAI IK Aug 2024")
     github_url = st.text_input("Enter the GitHub Repository URL:", "maniselvaraj/springboot-demo")
     if st.button("Start Analysis"):
         if github_url:
