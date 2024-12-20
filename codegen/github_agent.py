@@ -6,6 +6,7 @@ from langchain_community.agent_toolkits.github.toolkit import GitHubToolkit
 from langchain_community.utilities.github import GitHubAPIWrapper
 
 from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from langchain.agents import create_tool_calling_agent, Tool
 from langchain.prompts import ChatPromptTemplate
 
@@ -46,6 +47,7 @@ def init_github():
 
 def initialize_agent():
     llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), temperature=0)
+    #llm = ChatAnthropic(model="claude-3-opus-20240229", temperature=0)
     prompt = ChatPromptTemplate.from_messages(
         [
             (
@@ -98,20 +100,18 @@ def pull_request_workflow():
     branch_name = f"feature-branch-{time}"
     main_branch = "main"
     file_path = "src/main/java/com/mani/llm/springboot/LLMMainController.java"  # File to be updated
-    file_content_update = f"This is the updated content for the file. changing it using langchain {time}"
+    file_content_update = f"lorem ipsum dfdfd fdfdfd This is the updated content for the file. changing it using langchain {time}"
     commit_message = "Updated " + file_path + " with new content"
-    pull_request_title = "Update " + file_path + " and README.md"
-    pull_request_body = "This pull request updates " + file_path + " and README.md with new content."
+    pull_request_title = "Updating " + file_path
+    pull_request_body = "This pull request updates " + file_path + " with new content."
 
     # Step 1: Create a new branch
     initialize_branch(agent_exec, branch_name)
     update_file(agent_exec, file_path, file_content_update)
-    file_path = "README.md"
-    update_file(agent_exec,  file_path, file_content_update)
+    #file_path = "src/main/java/com/mani/llm/springboot/LLMMainController.java"
+    #update_file(agent_exec,  file_path, file_content_update)
     create_pr(agent_exec, pull_request_title, branch_name, main_branch, pull_request_body)
 
-init_github()
-pull_request_workflow()
 
 def raise_pr(java_content_map):
     init_github()
@@ -128,3 +128,6 @@ def raise_pr(java_content_map):
     create_pr(agent_exec, pull_request_title, branch_name, main_branch, pull_request_body)
 
 
+
+init_github()
+pull_request_workflow()
